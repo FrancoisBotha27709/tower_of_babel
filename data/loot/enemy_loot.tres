@@ -1,0 +1,52 @@
+[gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://b3vmc1suu0jsy"]
+
+[ext_resource type="Script" uid="uid://dqa33rmlo5cbj" path="res://loot/loot_table.gd" id="1_table"]
+[ext_resource type="Script" uid="uid://brudtpv1c7alu" path="res://loot/loot_entry.gd" id="2_entry"]
+[ext_resource type="PackedScene" path="res://loot/gold_pickup.tscn" id="3_gold"]
+[ext_resource type="PackedScene" path="res://loot/health_pickup.tscn" id="4_health"]
+[ext_resource type="PackedScene" path="res://loot/loot_pickup.tscn" id="5_loot"]
+[ext_resource type="Resource" path="res://data/items/loot/bent_spoon.tres" id="item_2"]
+[ext_resource type="Resource" path="res://data/items/loot/cracked_gem.tres" id="item_3"]
+[ext_resource type="Resource" path="res://data/items/loot/silver_ring.tres" id="item_4"]
+
+[sub_resource type="Resource" id="Entry_0"]
+script = ExtResource("2_entry")
+label = "Gold"
+pickup_scene = ExtResource("3_gold")
+weight = 5.0
+gold_minimum = 3
+gold_maximum = 15
+
+[sub_resource type="Resource" id="Entry_1"]
+script = ExtResource("2_entry")
+label = "Health"
+pickup_scene = ExtResource("4_health")
+weight = 3.0
+heal_minimum = 10.0
+heal_maximum = 25.0
+
+[sub_resource type="Resource" id="Entry_2"]
+script = ExtResource("2_entry")
+label = "bent_spoon"
+pickup_scene = ExtResource("5_loot")
+item = ExtResource("item_2")
+weight = 2.0
+
+[sub_resource type="Resource" id="Entry_3"]
+script = ExtResource("2_entry")
+label = "cracked_gem"
+pickup_scene = ExtResource("5_loot")
+item = ExtResource("item_3")
+
+[sub_resource type="Resource" id="Entry_4"]
+script = ExtResource("2_entry")
+label = "silver_ring"
+pickup_scene = ExtResource("5_loot")
+item = ExtResource("item_4")
+weight = 0.5
+
+[resource]
+script = ExtResource("1_table")
+entries = Array[ExtResource("2_entry")]([SubResource("Entry_0"), SubResource("Entry_1"), SubResource("Entry_2"), SubResource("Entry_3"), SubResource("Entry_4")])
+minimum_drops = 1
+maximum_drops = 3

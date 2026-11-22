@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="EquipmentData" format=3]
+
+[ext_resource type="Script" path="res://items/equipment_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://abilities/ability_data.gd" id="2_ability_script"]
+[ext_resource type="Resource" path="res://data/abilities/drink_flask.tres" id="3_ability"]
+[ext_resource type="Resource" path="res://data/slots/trinket.tres" id="4_slot"]
+
+[resource]
+script = ExtResource("1_item")
+display_name = "Regen Flask"
+description = "Trinket: grants the Drink Flask ability. Press Q to heal 40."
+value = 150
+slot = ExtResource("4_slot")
+abilities = Array[ExtResource("2_ability_script")]([ExtResource("3_ability")])

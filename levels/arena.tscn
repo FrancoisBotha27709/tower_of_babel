@@ -1,0 +1,417 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://npc/enemy_spawner.gd" id="1_enemy_spawner"]
+[ext_resource type="PackedScene" path="res://npc/enemy.tscn" id="2_enemy"]
+[ext_resource type="PackedScene" path="res://shop/shop_stall.tscn" id="3_shop_stall"]
+[ext_resource type="PackedScene" path="res://loot/loot_chest.tscn" id="4_loot_chest"]
+[ext_resource type="PackedScene" path="res://npc/attack_dummy.tscn" id="5_attack_dummy"]
+[ext_resource type="Script" path="res://player/player_spawn.gd" id="6_player_spawn"]
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="7_player"]
+
+[sub_resource type="ProceduralSkyMaterial" id="s0_ProceduralSkyMaterial"]
+sky_horizon_color = Color(0.66, 0.67, 0.69, 1)
+ground_horizon_color = Color(0.66, 0.67, 0.69, 1)
+
+[sub_resource type="Sky" id="s1_Sky"]
+sky_material = SubResource("s0_ProceduralSkyMaterial")
+
+[sub_resource type="Environment" id="s2_Environment"]
+background_mode = 2
+sky = SubResource("s1_Sky")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="m0"]
+albedo_color = Color(0.22, 0.24, 0.28, 1)
+
+[sub_resource type="StandardMaterial3D" id="m1"]
+albedo_color = Color(0.1, 0.55, 0.6, 1)
+
+[sub_resource type="StandardMaterial3D" id="m2"]
+albedo_color = Color(0.7, 0.62, 0.45, 1)
+
+[sub_resource type="StandardMaterial3D" id="m3"]
+albedo_color = Color(0.5, 0.52, 0.56, 1)
+
+[node name="Arena" type="Node3D"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("s2_Environment")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866, -0.433, 0.25, 0, 0.5, 0.866, -0.5, 0.75, -0.433, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Geometry" type="Node3D" parent="."]
+
+[node name="Spawners" type="Node3D" parent="."]
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Floor1" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+radius = 42.0
+height = 1
+sides = 64
+material = SubResource("m0")
+
+[node name="Wall1" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, 41)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall2" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.9511, 0, 0.309, 0, 1, 0, -0.309, 0, 0.9511, 12.6697, 7, 38.9933)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall3" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.809, 0, 0.5878, 0, 1, 0, -0.5878, 0, 0.809, 24.0992, 7, 33.1697)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall4" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.5878, 0, 0.809, 0, 1, 0, -0.809, 0, 0.5878, 33.1697, 7, 24.0992)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall5" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.309, 0, 0.9511, 0, 1, 0, -0.9511, 0, 0.309, 38.9933, 7, 12.6697)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall6" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 41, 7, 0)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall7" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.309, 0, 0.9511, 0, 1, 0, -0.9511, 0, -0.309, 38.9933, 7, -12.6697)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall8" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.5878, 0, 0.809, 0, 1, 0, -0.809, 0, -0.5878, 33.1697, 7, -24.0992)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall9" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.809, 0, 0.5878, 0, 1, 0, -0.5878, 0, -0.809, 24.0992, 7, -33.1697)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall10" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.9511, 0, 0.309, 0, 1, 0, -0.309, 0, -0.9511, 12.6697, 7, -38.9933)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall11" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, 0, 7, -41)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall12" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.9511, 0, -0.309, 0, 1, 0, 0.309, 0, -0.9511, -12.6697, 7, -38.9933)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall13" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.809, 0, -0.5878, 0, 1, 0, 0.5878, 0, -0.809, -24.0992, 7, -33.1697)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall14" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.5878, 0, -0.809, 0, 1, 0, 0.809, 0, -0.5878, -33.1697, 7, -24.0992)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall15" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.309, 0, -0.9511, 0, 1, 0, 0.9511, 0, -0.309, -38.9933, 7, -12.6697)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall16" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0, 0, -1, 0, 1, 0, 1, 0, -0, -41, 7, -0)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall17" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.309, 0, -0.9511, 0, 1, 0, 0.9511, 0, 0.309, -38.9933, 7, 12.6697)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall18" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.5878, 0, -0.809, 0, 1, 0, 0.809, 0, 0.5878, -33.1697, 7, 24.0992)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall19" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.809, 0, -0.5878, 0, 1, 0, 0.5878, 0, 0.809, -24.0992, 7, 33.1697)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Wall20" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.9511, 0, -0.309, 0, 1, 0, 0.309, 0, 0.9511, -12.6697, 7, 38.9933)
+use_collision = true
+size = Vector3(13.4805, 14, 2)
+material = SubResource("m1")
+
+[node name="Dais1" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+use_collision = true
+radius = 9
+height = 2
+sides = 24
+material = SubResource("m2")
+
+[node name="DaisStep1" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.7071, 0, 0.7071, 0, 1, 0, -0.7071, 0, 0.7071, 8.1317, 0.5, 8.1317)
+use_collision = true
+size = Vector3(4, 1, 4)
+material = SubResource("m2")
+
+[node name="DaisStep2" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.7071, 0, 0.7071, 0, 1, 0, -0.7071, 0, -0.7071, 8.1317, 0.5, -8.1317)
+use_collision = true
+size = Vector3(4, 1, 4)
+material = SubResource("m2")
+
+[node name="DaisStep3" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.7071, 0, -0.7071, 0, 1, 0, 0.7071, 0, -0.7071, -8.1317, 0.5, -8.1317)
+use_collision = true
+size = Vector3(4, 1, 4)
+material = SubResource("m2")
+
+[node name="DaisStep4" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.7071, 0, -0.7071, 0, 1, 0, 0.7071, 0, 0.7071, -8.1317, 0.5, 8.1317)
+use_collision = true
+size = Vector3(4, 1, 4)
+material = SubResource("m2")
+
+[node name="Pillar1" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 24)
+use_collision = true
+radius = 1.6
+height = 10
+sides = 16
+material = SubResource("m3")
+
+[node name="Pillar2" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9706, 5, 16.9706)
+use_collision = true
+radius = 1.6
+height = 10
+sides = 16
+material = SubResource("m3")
+
+[node name="Pillar3" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 5, 0)
+use_collision = true
+radius = 1.6
+height = 10
+sides = 16
+material = SubResource("m3")
+
+[node name="Pillar4" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9706, 5, -16.9706)
+use_collision = true
+radius = 1.6
+height = 10
+sides = 16
+material = SubResource("m3")
+
+[node name="Pillar5" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -24)
+use_collision = true
+radius = 1.6
+height = 10
+sides = 16
+material = SubResource("m3")
+
+[node name="Pillar6" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.9706, 5, -16.9706)
+use_collision = true
+radius = 1.6
+height = 10
+sides = 16
+material = SubResource("m3")
+
+[node name="Pillar7" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 5, -0)
+use_collision = true
+radius = 1.6
+height = 10
+sides = 16
+material = SubResource("m3")
+
+[node name="Pillar8" type="CSGCylinder3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.9706, 5, 16.9706)
+use_collision = true
+radius = 1.6
+height = 10
+sides = 16
+material = SubResource("m3")
+
+[node name="Cover1" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.5, 0, 0.866, 0, 1, 0, -0.866, 0, -0.5, 8, 0.75, 13.8564)
+use_collision = true
+size = Vector3(5, 1.5, 1.2)
+material = SubResource("m3")
+
+[node name="Cover2" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, 16, 0.75, 0)
+use_collision = true
+size = Vector3(5, 1.5, 1.2)
+material = SubResource("m3")
+
+[node name="Cover3" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0.5, 0, -0.866, 0, 1, 0, 0.866, 0, -0.5, 8, 0.75, -13.8564)
+use_collision = true
+size = Vector3(5, 1.5, 1.2)
+material = SubResource("m3")
+
+[node name="Cover4" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.5, 0, -0.866, 0, 1, 0, 0.866, 0, 0.5, -8, 0.75, -13.8564)
+use_collision = true
+size = Vector3(5, 1.5, 1.2)
+material = SubResource("m3")
+
+[node name="Cover5" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, -0, 0, 1, 0, 0, 0, 1, -16, 0.75, -0)
+use_collision = true
+size = Vector3(5, 1.5, 1.2)
+material = SubResource("m3")
+
+[node name="Cover6" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0.5, 0, 0.866, 0, 1, 0, -0.866, 0, 0.5, -8, 0.75, 13.8564)
+use_collision = true
+size = Vector3(5, 1.5, 1.2)
+material = SubResource("m3")
+
+[node name="RimPlatform1" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 34)
+use_collision = true
+size = Vector3(10, 4, 6)
+material = SubResource("m2")
+
+[node name="RimStep1" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 29)
+use_collision = true
+size = Vector3(6, 2, 4)
+material = SubResource("m2")
+
+[node name="RimPlatform2" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 34, 2, 0)
+use_collision = true
+size = Vector3(10, 4, 6)
+material = SubResource("m2")
+
+[node name="RimStep2" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 29, 1, 0)
+use_collision = true
+size = Vector3(6, 2, 4)
+material = SubResource("m2")
+
+[node name="RimPlatform3" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, 0, 2, -34)
+use_collision = true
+size = Vector3(10, 4, 6)
+material = SubResource("m2")
+
+[node name="RimStep3" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, 0, 1, -29)
+use_collision = true
+size = Vector3(6, 2, 4)
+material = SubResource("m2")
+
+[node name="RimPlatform4" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0, 0, -1, 0, 1, 0, 1, 0, -0, -34, 2, -0)
+use_collision = true
+size = Vector3(10, 4, 6)
+material = SubResource("m2")
+
+[node name="RimStep4" type="CSGBox3D" parent="Geometry"]
+transform = Transform3D(-0, 0, -1, 0, 1, 0, 1, 0, -0, -29, 1, -0)
+use_collision = true
+size = Vector3(6, 2, 4)
+material = SubResource("m2")
+
+[node name="EnemySpawner1" type="Marker3D" parent="Spawners"]
+transform = Transform3D(-0.7071, 0, -0.7071, 0, 1, 0, 0.7071, 0, -0.7071, 22.6274, 0.2, 22.6274)
+gizmo_extents = 1.0
+script = ExtResource("1_enemy_spawner")
+enemy_scene = ExtResource("2_enemy")
+initial_count = 1
+maximum_alive = 3
+spawn_interval = 6.0
+
+[node name="EnemySpawner2" type="Marker3D" parent="Spawners"]
+transform = Transform3D(0.7071, 0, -0.7071, 0, 1, 0, 0.7071, 0, 0.7071, 22.6274, 0.2, -22.6274)
+gizmo_extents = 1.0
+script = ExtResource("1_enemy_spawner")
+enemy_scene = ExtResource("2_enemy")
+initial_count = 1
+maximum_alive = 3
+spawn_interval = 6.0
+
+[node name="EnemySpawner3" type="Marker3D" parent="Spawners"]
+transform = Transform3D(0.7071, 0, 0.7071, 0, 1, 0, -0.7071, 0, 0.7071, -22.6274, 0.2, -22.6274)
+gizmo_extents = 1.0
+script = ExtResource("1_enemy_spawner")
+enemy_scene = ExtResource("2_enemy")
+initial_count = 1
+maximum_alive = 3
+spawn_interval = 6.0
+
+[node name="EnemySpawner4" type="Marker3D" parent="Spawners"]
+transform = Transform3D(-0.7071, 0, 0.7071, 0, 1, 0, -0.7071, 0, -0.7071, -22.6274, 0.2, 22.6274)
+gizmo_extents = 1.0
+script = ExtResource("1_enemy_spawner")
+enemy_scene = ExtResource("2_enemy")
+initial_count = 1
+maximum_alive = 3
+spawn_interval = 6.0
+
+[node name="ShopStall" parent="Props" instance=ExtResource("3_shop_stall")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, 0, 2, -3)
+
+[node name="LootChest" parent="Props" instance=ExtResource("4_loot_chest")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
+
+[node name="AttackDummy1" parent="Props" instance=ExtResource("5_attack_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -14)
+
+[node name="AttackDummy2" parent="Props" instance=ExtResource("5_attack_dummy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -14)
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, 0, 0.2, 20)
+gizmo_extents = 1.0
+script = ExtResource("6_player_spawn")
+
+[node name="Player" parent="." instance=ExtResource("7_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 20)
+
+

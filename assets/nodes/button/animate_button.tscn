@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://be3o7qpxq102"]
+
+[ext_resource type="Script" uid="uid://dcrpnt4x6cilt" path="res://assets/nodes/button/animate_button.gd" id="1_p6amu"]
+
+[node name="MenuButton" type="Button" unique_id=499305522 node_paths=PackedStringArray("node_label")]
+custom_minimum_size = Vector2(48, 48)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p6amu")
+node_label = NodePath("MarginContainer/RichTextLabel")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=174241343]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer" unique_id=207785141]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+mouse_filter = 1
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://dsy05dxw7rh3m"]
+
+[ext_resource type="Script" uid="uid://iqg7k4wa7qti" path="res://npc/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://c3rmuibxa5lh" path="res://combat/health_component.gd" id="2_health"]
+[ext_resource type="Script" uid="uid://1ow10kaq0was" path="res://combat/hurtbox_component.gd" id="3_hurtbox"]
+[ext_resource type="Script" uid="uid://cw45g0m0fsel4" path="res://combat/hitbox_component.gd" id="4_hitbox"]
+[ext_resource type="Script" uid="uid://ddck8mfjmm11q" path="res://combat/knockback_component.gd" id="5_knockback"]
+[ext_resource type="Script" uid="uid://dqbpvhep6r0ho" path="res://combat/hit_flash.gd" id="6_flash"]
+[ext_resource type="Script" uid="uid://fl6haiq4bmni" path="res://npc/enemy_steering.gd" id="7_steering"]
+[ext_resource type="Script" uid="uid://c6bwwbl1ocfah" path="res://stats/stats_component.gd" id="30_stats"]
+[ext_resource type="Script" uid="uid://dckhses7xn7js" path="res://items/inventory_component.gd" id="31_inventory"]
+[ext_resource type="Script" uid="uid://dt6y6dys1njkp" path="res://abilities/ability_component.gd" id="32_abilities"]
+[ext_resource type="Script" uid="uid://drkda76k33bbl" path="res://combat/death_component.gd" id="33_death"]
+[ext_resource type="Script" uid="uid://e30cmmje33xn" path="res://stats/stat_binder.gd" id="37_binder"]
+[ext_resource type="Resource" path="res://data/stats/max_health.tres" id="38_stat_health"]
+[ext_resource type="Resource" path="res://data/stats/move_speed.tres" id="39_stat_speed"]
+[ext_resource type="Resource" path="res://data/stats/damage.tres" id="40_stat_damage"]
+[ext_resource type="Script" uid="uid://do61v102emk8j" path="res://items/slot_definition.gd" id="41_slot_script"]
+[ext_resource type="Resource" path="res://data/slots/weapon.tres" id="42_slot_weapon"]
+[ext_resource type="Script" uid="uid://bqqhfvprm33t" path="res://loot/loot_dropper.gd" id="60_dropper"]
+[ext_resource type="Resource" uid="uid://b3vmc1suu0jsy" path="res://data/loot/enemy_loot.tres" id="61_table"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_enemy"]
+albedo_color = Color(0.8, 0.15, 0.15, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_enemy"]
+material = SubResource("StandardMaterial3D_enemy")
+
+[sub_resource type="BoxMesh" id="BoxMesh_nose"]
+size = Vector3(0.2, 0.2, 0.4)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_enemy"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurt"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_attack"]
+size = Vector3(1.5, 1.5, 1.6)
+
+[node name="Enemy" type="CharacterBody3D" unique_id=2060313883 node_paths=PackedStringArray("death", "attack_hitbox", "steering")]
+script = ExtResource("1_enemy")
+death = NodePath("Death")
+attack_hitbox = NodePath("AttackHitbox")
+steering = NodePath("Steering")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1160580449]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_enemy")
+
+[node name="Nose" type="MeshInstance3D" parent="." unique_id=44204693]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.5)
+mesh = SubResource("BoxMesh_nose")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=605287974]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_enemy")
+
+[node name="Health" type="Node" parent="." unique_id=1528524692]
+script = ExtResource("2_health")
+maximum_health = 50.0
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=523402772 node_paths=PackedStringArray("health")]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("3_hurtbox")
+health = NodePath("../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=1828716566]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_hurt")
+
+[node name="AttackHitbox" type="Area3D" parent="." unique_id=1818366355 node_paths=PackedStringArray("source")]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("4_hitbox")
+knockback_force = 4.0
+source = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AttackHitbox" unique_id=1747730177]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1.3)
+shape = SubResource("BoxShape3D_attack")
+
+[node name="Knockback" type="Node" parent="." unique_id=1833217532 node_paths=PackedStringArray("body", "health")]
+script = ExtResource("5_knockback")
+body = NodePath("..")
+health = NodePath("../Health")
+
+[node name="HitFlash" type="Node" parent="." unique_id=303603536 node_paths=PackedStringArray("health", "mesh")]
+script = ExtResource("6_flash")
+health = NodePath("../Health")
+mesh = NodePath("../MeshInstance3D")
+
+[node name="Steering" type="Node" parent="." unique_id=797650643 node_paths=PackedStringArray("body")]
+script = ExtResource("7_steering")
+body = NodePath("..")
+
+[node name="Stats" type="Node" parent="." unique_id=283282973]
+script = ExtResource("30_stats")
+
+[node name="Abilities" type="Node" parent="." unique_id=800953726 node_paths=PackedStringArray("body", "stats", "health")]
+script = ExtResource("32_abilities")
+body = NodePath("..")
+stats = NodePath("../Stats")
+health = NodePath("../Health")
+
+[node name="Inventory" type="Node" parent="." unique_id=829238785 node_paths=PackedStringArray("body", "stats", "abilities")]
+script = ExtResource("31_inventory")
+body = NodePath("..")
+stats = NodePath("../Stats")
+abilities = NodePath("../Abilities")
+allowed_slots = Array[ExtResource("41_slot_script")]([ExtResource("42_slot_weapon")])
+
+[node name="Death" type="Node" parent="." unique_id=1459327816 node_paths=PackedStringArray("health")]
+script = ExtResource("33_death")
+health = NodePath("../Health")
+death_delay = 0.6
+
+[node name="MaxHealthBinder" type="Node" parent="." unique_id=1296605880 node_paths=PackedStringArray("stats", "target")]
+script = ExtResource("37_binder")
+stats = NodePath("../Stats")
+target = NodePath("../Health")
+stat = ExtResource("38_stat_health")
+property = &"maximum_health"
+
+[node name="MoveSpeedBinder" type="Node" parent="." unique_id=465414866 node_paths=PackedStringArray("stats", "target")]
+script = ExtResource("37_binder")
+stats = NodePath("../Stats")
+target = NodePath("..")
+stat = ExtResource("39_stat_speed")
+property = &"move_speed"
+
+[node name="AttackDamageBinder" type="Node" parent="." unique_id=1118451208 node_paths=PackedStringArray("stats", "target")]
+script = ExtResource("37_binder")
+stats = NodePath("../Stats")
+target = NodePath("../AttackHitbox")
+stat = ExtResource("40_stat_damage")
+property = &"damage"
+
+[node name="LootDropper" type="Node" parent="." unique_id=1400564002 node_paths=PackedStringArray("death", "body")]
+script = ExtResource("60_dropper")
+death = NodePath("../Death")
+body = NodePath("..")
+table = ExtResource("61_table")
+drop_chance = 0.6

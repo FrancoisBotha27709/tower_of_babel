@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="StatDefinition" format=3]
+
+[ext_resource type="Script" path="res://stats/stat_definition.gd" id="1_stat"]
+
+[resource]
+script = ExtResource("1_stat")
+display_name = "Move Speed"

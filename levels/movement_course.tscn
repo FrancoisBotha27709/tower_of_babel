@@ -1,0 +1,534 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://player/player_spawn.gd" id="1_player_spawn"]
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://combat/hitbox_component.gd" id="3_hitbox_component"]
+
+[sub_resource type="ProceduralSkyMaterial" id="s0_ProceduralSkyMaterial"]
+sky_horizon_color = Color(0.66, 0.67, 0.69, 1)
+ground_horizon_color = Color(0.66, 0.67, 0.69, 1)
+
+[sub_resource type="Sky" id="s1_Sky"]
+sky_material = SubResource("s0_ProceduralSkyMaterial")
+
+[sub_resource type="Environment" id="s2_Environment"]
+background_mode = 2
+sky = SubResource("s1_Sky")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="m0"]
+albedo_color = Color(0.25, 0.27, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="m1"]
+albedo_color = Color(0.55, 0.57, 0.6, 1)
+
+[sub_resource type="StandardMaterial3D" id="m2"]
+albedo_color = Color(0.1, 0.6, 0.65, 1)
+
+[sub_resource type="StandardMaterial3D" id="m3"]
+albedo_color = Color(0.95, 0.5, 0.1, 1)
+
+[sub_resource type="StandardMaterial3D" id="m4"]
+albedo_color = Color(0.85, 0.15, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="m5"]
+albedo_color = Color(0.95, 0.85, 0.2, 1)
+
+[sub_resource type="BoxShape3D" id="s9_BoxShape3D"]
+size = Vector3(10, 6, 10)
+
+[sub_resource type="BoxShape3D" id="s10_BoxShape3D"]
+size = Vector3(10, 6, 10)
+
+[sub_resource type="BoxShape3D" id="s11_BoxShape3D"]
+size = Vector3(10, 6, 10)
+
+[sub_resource type="BoxShape3D" id="s12_BoxShape3D"]
+size = Vector3(10, 6, 10)
+
+[sub_resource type="BoxShape3D" id="s13_BoxShape3D"]
+size = Vector3(400, 2, 400)
+
+[node name="MovementCourse" type="Node3D"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("s2_Environment")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866, -0.433, 0.25, 0, 0.5, 0.866, -0.5, 0.75, -0.433, 0, 0, 0)
+shadow_enabled = true
+
+[node name="LegA" type="Node3D" parent="."]
+
+[node name="LegB" type="Node3D" parent="."]
+
+[node name="LegC" type="Node3D" parent="."]
+
+[node name="LegD" type="Node3D" parent="."]
+
+[node name="Corners" type="Node3D" parent="."]
+
+[node name="Signs" type="Node3D" parent="."]
+
+[node name="Checkpoints" type="Node3D" parent="."]
+
+[node name="Corner1" type="CSGBox3D" parent="Corners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -0.5, 60)
+use_collision = true
+size = Vector3(12, 1, 12)
+material = SubResource("m0")
+
+[node name="Corner2" type="CSGBox3D" parent="Corners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, -0.5, 60)
+use_collision = true
+size = Vector3(12, 1, 12)
+material = SubResource("m0")
+
+[node name="Corner3" type="CSGBox3D" parent="Corners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, -0.5, -60)
+use_collision = true
+size = Vector3(12, 1, 12)
+material = SubResource("m0")
+
+[node name="Corner4" type="CSGBox3D" parent="Corners"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -0.5, -60)
+use_collision = true
+size = Vector3(12, 1, 12)
+material = SubResource("m0")
+
+[node name="Sign1" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 4.5, 60)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "RUN - JUMP - BUNNY HOP"
+font_size = 96
+
+[node name="Hurdle1" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.5, 0.5, 60)
+use_collision = true
+size = Vector3(1, 1, 12)
+material = SubResource("m1")
+
+[node name="Hurdle2" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.5, 0.5, 60)
+use_collision = true
+size = Vector3(1, 1, 12)
+material = SubResource("m1")
+
+[node name="Hurdle3" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.5, 0.5, 60)
+use_collision = true
+size = Vector3(1, 1, 12)
+material = SubResource("m1")
+
+[node name="Hurdle4" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.5, 0.5, 60)
+use_collision = true
+size = Vector3(1, 1, 12)
+material = SubResource("m1")
+
+[node name="Hurdle5" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.5, 0.5, 60)
+use_collision = true
+size = Vector3(1, 1, 12)
+material = SubResource("m1")
+
+[node name="Sign2" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 4.5, 60)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "CROUCH / SLIDE UNDER"
+font_size = 96
+
+[node name="TunnelCeiling1" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.9, 60)
+use_collision = true
+size = Vector3(16, 1, 12)
+material = SubResource("m1")
+
+[node name="Sign3" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 4.5, 60)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "GAP JUMPS 4 / 6 / 8"
+font_size = 96
+
+[node name="Floor1" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21, -0.5, 60)
+use_collision = true
+size = Vector3(66, 1, 12)
+material = SubResource("m1")
+
+[node name="Floor2" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -0.5, 60)
+use_collision = true
+size = Vector3(8, 1, 12)
+material = SubResource("m1")
+
+[node name="Floor3" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, -0.5, 60)
+use_collision = true
+size = Vector3(8, 1, 12)
+material = SubResource("m1")
+
+[node name="Floor4" type="CSGBox3D" parent="LegA"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, -0.5, 60)
+use_collision = true
+size = Vector3(8, 1, 12)
+material = SubResource("m1")
+
+[node name="Sign4" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 4.5, 50)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "WALL RUN (jump at a wall, hold forward)"
+font_size = 96
+
+[node name="Floor5" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, -0.5, 50)
+use_collision = true
+size = Vector3(12, 1, 8)
+material = SubResource("m1")
+
+[node name="Floor6" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, -0.5, 10)
+use_collision = true
+size = Vector3(12, 1, 12)
+material = SubResource("m1")
+
+[node name="Floor7" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, -0.5, -12)
+use_collision = true
+size = Vector3(12, 1, 8)
+material = SubResource("m1")
+
+[node name="RunWall1" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 3.5, 31)
+use_collision = true
+size = Vector3(1, 9, 38)
+material = SubResource("m2")
+
+[node name="RunWall2" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 3.5, 31)
+use_collision = true
+size = Vector3(1, 9, 38)
+material = SubResource("m2")
+
+[node name="Sign5" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 4.5, 8)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "WALL JUMP SHAFT (jump off the wall)"
+font_size = 96
+
+[node name="ShaftWall1" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 8, -4)
+use_collision = true
+size = Vector3(1, 16, 12)
+material = SubResource("m2")
+
+[node name="ShaftWall2" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 66, 8, -4)
+use_collision = true
+size = Vector3(1, 16, 12)
+material = SubResource("m2")
+
+[node name="ShaftTop1" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 9.25, -15)
+use_collision = true
+size = Vector3(12, 1.5, 10)
+material = SubResource("m1")
+
+[node name="Sign6" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 13, -16)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "SLIDE DOWNHILL"
+font_size = 96
+
+[node name="SlideRamp1" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(0, 0, 1, -0.3019, 0.9533, 0, -0.9533, -0.3019, 0, 60, 4.7733, -34.8491)
+use_collision = true
+size = Vector3(31.4682, 1, 12)
+material = SubResource("m3")
+
+[node name="Floor8" type="CSGBox3D" parent="LegB"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, -0.5, -50)
+use_collision = true
+size = Vector3(12, 1, 8)
+material = SubResource("m1")
+
+[node name="Sign7" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 4.5, -60)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "MANTLE (jump at a ledge)"
+font_size = 96
+
+[node name="MantleStep1" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 1, -60)
+use_collision = true
+size = Vector3(4, 2, 12)
+material = SubResource("m1")
+
+[node name="MantleStep2" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 2, -60)
+use_collision = true
+size = Vector3(4, 4, 12)
+material = SubResource("m1")
+
+[node name="MantleStep3" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 3, -60)
+use_collision = true
+size = Vector3(4, 6, 12)
+material = SubResource("m1")
+
+[node name="MantleStep4" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 4, -60)
+use_collision = true
+size = Vector3(4, 8, 12)
+material = SubResource("m1")
+
+[node name="SlamTower1" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 4, -60)
+use_collision = true
+size = Vector3(8, 8, 12)
+material = SubResource("m1")
+
+[node name="Sign8" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 12, -60)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "SLAM: crouch in the air"
+font_size = 96
+
+[node name="Floor9" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43, -0.5, -60)
+use_collision = true
+size = Vector3(22, 1, 12)
+material = SubResource("m1")
+
+[node name="Floor10" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -0.5, -60)
+use_collision = true
+size = Vector3(44, 1, 12)
+material = SubResource("m1")
+
+[node name="Floor11" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.5, -0.5, -60)
+use_collision = true
+size = Vector3(21, 1, 12)
+material = SubResource("m1")
+
+[node name="SlamPad1" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0.025, -60)
+use_collision = true
+size = Vector3(8, 0.05, 6)
+material = SubResource("m4")
+
+[node name="Sign9" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 9, -60)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "SLAM JUMP: jump on landing"
+font_size = 96
+
+[node name="SlamJumpPlatform1" type="CSGBox3D" parent="LegC"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2.75, -60)
+use_collision = true
+size = Vector3(10, 5.5, 12)
+material = SubResource("m1")
+
+[node name="Sign10" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 4.5, -60)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "DASH GAP (jump, then dash)"
+font_size = 96
+
+[node name="Sign11" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 4.5, -52)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "LAUNCH RAMP"
+font_size = 96
+
+[node name="LaunchRamp1" type="CSGBox3D" parent="LegD"]
+transform = Transform3D(0, 0, -1, 0.2607, 0.9654, 0, 0.9654, -0.2607, 0, -60, 0.8673, -42.8697)
+use_collision = true
+size = Vector3(10.3581, 1, 12)
+material = SubResource("m3")
+
+[node name="Floor12" type="CSGBox3D" parent="LegD"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -0.5, -46)
+use_collision = true
+size = Vector3(12, 1, 16)
+material = SubResource("m1")
+
+[node name="Floor13" type="CSGBox3D" parent="LegD"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -0.5, -16.5)
+use_collision = true
+size = Vector3(12, 1, 21)
+material = SubResource("m1")
+
+[node name="Floor14" type="CSGBox3D" parent="LegD"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -0.5, 29)
+use_collision = true
+size = Vector3(12, 1, 14)
+material = SubResource("m1")
+
+[node name="Floor15" type="CSGBox3D" parent="LegD"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -0.5, 50.5)
+use_collision = true
+size = Vector3(12, 1, 7)
+material = SubResource("m1")
+
+[node name="Sign12" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 4.5, -22)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "WALK BEAM (hold walk)"
+font_size = 96
+
+[node name="Beam1" type="CSGBox3D" parent="LegD"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -0.2, 8)
+use_collision = true
+size = Vector3(1.6, 0.4, 28)
+material = SubResource("m5")
+
+[node name="Sign13" type="Label3D" parent="Signs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 4.5, 26)
+billboard = 1
+no_depth_test = true
+shaded = false
+modulated = Color(0.95, 0.85, 0.2, 1)
+pixel_size = 0.012
+outline_size = 24
+text = "SLIDE JUMP (slide, then jump)"
+font_size = 96
+
+[node name="SpawnA" type="Marker3D" parent="Checkpoints"]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -60, 0.2, 60)
+gizmo_extents = 1.0
+script = ExtResource("1_player_spawn")
+active = true
+
+[node name="CheckpointA" type="Area3D" parent="Checkpoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 3, 60)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Checkpoints/CheckpointA"]
+shape = SubResource("s9_BoxShape3D")
+
+[node name="SpawnB" type="Marker3D" parent="Checkpoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.2, 60)
+gizmo_extents = 1.0
+script = ExtResource("1_player_spawn")
+active = false
+
+[node name="CheckpointB" type="Area3D" parent="Checkpoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 3, 60)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Checkpoints/CheckpointB"]
+shape = SubResource("s10_BoxShape3D")
+
+[node name="SpawnC" type="Marker3D" parent="Checkpoints"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 60, 0.2, -60)
+gizmo_extents = 1.0
+script = ExtResource("1_player_spawn")
+active = false
+
+[node name="CheckpointC" type="Area3D" parent="Checkpoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 3, -60)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Checkpoints/CheckpointC"]
+shape = SubResource("s11_BoxShape3D")
+
+[node name="SpawnD" type="Marker3D" parent="Checkpoints"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, -0, 0, -1, -60, 0.2, -60)
+gizmo_extents = 1.0
+script = ExtResource("1_player_spawn")
+active = false
+
+[node name="CheckpointD" type="Area3D" parent="Checkpoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 3, -60)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Checkpoints/CheckpointD"]
+shape = SubResource("s12_BoxShape3D")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -60, 0.2, 60)
+
+[node name="KillZone" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -14, 0)
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("3_hitbox_component")
+damage = 9999.0
+always_active = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KillZone"]
+shape = SubResource("s13_BoxShape3D")
+
+[connection signal="body_entered" from="Checkpoints/CheckpointA" to="Checkpoints/SpawnA" method="activate" unbinds=1]
+[connection signal="body_entered" from="Checkpoints/CheckpointB" to="Checkpoints/SpawnB" method="activate" unbinds=1]
+[connection signal="body_entered" from="Checkpoints/CheckpointC" to="Checkpoints/SpawnC" method="activate" unbinds=1]
+[connection signal="body_entered" from="Checkpoints/CheckpointD" to="Checkpoints/SpawnD" method="activate" unbinds=1]

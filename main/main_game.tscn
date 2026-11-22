@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://be42qth0uaw4r"]
+
+[ext_resource type="Script" uid="uid://cy1jndkmwywnm" path="res://main/main_game.gd" id="1_ixex6"]
+[ext_resource type="PackedScene" uid="uid://g4qx1abjlym7" path="res://player/player.tscn" id="2_1uyyn"]
+[ext_resource type="PackedScene" path="res://npc/enemy.tscn" id="3_sqel3"]
+[ext_resource type="PackedScene" path="res://npc/attack_dummy.tscn" id="4_ykneo"]
+[ext_resource type="PackedScene" path="res://items/item_pickup.tscn" id="5_pickup"]
+[ext_resource type="Resource" path="res://data/items/adrenaline.tres" id="6_adrenaline"]
+[ext_resource type="Resource" path="res://data/items/iron_fist.tres" id="7_fist"]
+[ext_resource type="Resource" path="res://data/items/regen_flask.tres" id="8_flask"]
+[ext_resource type="Resource" path="res://data/items/second_wind.tres" id="11_second_wind"]
+[ext_resource type="Script" path="res://items/item_data.gd" id="12_item_script"]
+[ext_resource type="Script" path="res://player/player_spawn.gd" id="9_player_spawn"]
+[ext_resource type="Script" path="res://npc/enemy_spawner.gd" id="10_spawner"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1uyyn"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_5437h"]
+sky_material = SubResource("ProceduralSkyMaterial_1uyyn")
+
+[sub_resource type="Environment" id="Environment_sqel3"]
+background_mode = 2
+sky = SubResource("Sky_5437h")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="MainGame" type="Node3D" unique_id=341915038]
+script = ExtResource("1_ixex6")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1734397073]
+use_collision = true
+size = Vector3(100, 0.3, 100)
+
+[node name="Player" parent="." unique_id=21423180 instance=ExtResource("2_1uyyn")]
+
+[node name="Environment" type="Node3D" parent="." unique_id=1157418172]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=124036902]
+environment = SubResource("Environment_sqel3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1277414431]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="." unique_id=1394530126]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.294485, 2.4764404, 2.339901)
+use_collision = true
+size = Vector3(1, 5, 21.434082)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="." unique_id=1772096746]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.294485, 2.4764404, -5.660099)
+use_collision = true
+size = Vector3(1, 5, 21.434082)
+
+[node name="Enemy" parent="." unique_id=1190110804 instance=ExtResource("3_sqel3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.01719, 0.15000057, -24.995033)
+
+[node name="AttackDummy" parent="." unique_id=1883124878 instance=ExtResource("4_ykneo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.2476792, 0.14999962, -16.609716)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="." unique_id=350119751]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 21.458786, 4.655258, 2.339901)
+use_collision = true
+size = Vector3(1, 12.241089, 21.434082)
+
+[node name="Enemy2" parent="." unique_id=1342686411 instance=ExtResource("3_sqel3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5472364, 0.14999771, -21.008621)
+
+[node name="Enemy3" parent="." unique_id=1923180364 instance=ExtResource("3_sqel3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.68914, 0.14999962, 0.008852005)
+
+[node name="Enemy4" parent="." unique_id=584106020 instance=ExtResource("3_sqel3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.824142, 5.155259, -4.4976387)
+
+[node name="Enemy5" parent="." unique_id=1858307112 instance=ExtResource("3_sqel3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.306339, 0.14999962, -8.21096)
+
+[node name="AdrenalinePickup" parent="." instance=ExtResource("5_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.8, -6)
+item = ExtResource("6_adrenaline")
+
+[node name="IronFistPickup" parent="." instance=ExtResource("5_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, -6)
+item = ExtResource("7_fist")
+
+[node name="RegenFlaskPickup" parent="." instance=ExtResource("5_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.8, -6)
+item = ExtResource("8_flask")
+
+[node name="SecondWindPickup" parent="." instance=ExtResource("5_pickup")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.8, -6)
+item = ExtResource("11_second_wind")
+
+[node name="PlayerSpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+gizmo_extents = 1.0
+script = ExtResource("9_player_spawn")
+
+[node name="EnemySpawner" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -30)
+gizmo_extents = 1.0
+script = ExtResource("10_spawner")
+enemy_scene = ExtResource("3_sqel3")
+bonus_items = Array[ExtResource("12_item_script")]([ExtResource("11_second_wind")])

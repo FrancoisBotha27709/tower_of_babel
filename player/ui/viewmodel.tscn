@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://dh3hx0xtxjjs6"]
+
+[ext_resource type="Script" uid="uid://cyix35ci34ess" path="res://player/ui/viewmodel_reactor.gd" id="1_q8nyx"]
+[ext_resource type="Script" uid="uid://r7tem08l8of1" path="res://player/ui/lamp_guage.gd" id="2_aymms"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gauntlet"]
+size = Vector3(0.12, 0.08, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lamp"]
+size = Vector3(0.03, 0.03, 0.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamp"]
+albedo_color = Color(0.2, 0.8, 1, 1)
+emission_enabled = true
+emission = Color(0.2, 0.8, 1, 1)
+emission_energy_multiplier = 3.0
+
+[node name="Viewmodel" type="Node3D" unique_id=848013827 node_paths=PackedStringArray("glow")]
+script = ExtResource("1_q8nyx")
+glow = NodePath("Glow")
+pose_positions = Dictionary[StringName, Vector3]({
+&"Air": Vector3(0, 0.04, 0),
+&"Crouch": Vector3(0, -0.05, 0),
+&"Dash": Vector3(0, 0, -0.15),
+&"Slide": Vector3(0.05, -0.12, 0.05),
+&"WallRun": Vector3(0.05, 0, 0)
+})
+pose_rotations_degrees = Dictionary[StringName, Vector3]({
+&"Dash": Vector3(-10, 0, 0),
+&"Slide": Vector3(0, 0, -20),
+&"WallRun": Vector3(0, 0, 15)
+})
+glow_colors = Dictionary[StringName, Color]({
+&"Dash": Color(1, 1, 1, 1),
+&"Slide": Color(1, 0.5, 0.1, 1),
+&"WallRun": Color(0.4, 0.6, 1, 1)
+})
+default_glow_color = Color(0.2, 0.8, 1, 1)
+
+[node name="Gauntlet" type="MeshInstance3D" parent="." unique_id=464330695]
+mesh = SubResource("BoxMesh_gauntlet")
+
+[node name="Lamps" type="Node3D" parent="." unique_id=126261668]
+
+[node name="Lamp1" type="MeshInstance3D" parent="Lamps" unique_id=1000007235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, 0.05, 0)
+mesh = SubResource("BoxMesh_lamp")
+surface_material_override/0 = SubResource("StandardMaterial3D_lamp")
+
+[node name="Lamp2" type="MeshInstance3D" parent="Lamps" unique_id=843036013]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("BoxMesh_lamp")
+surface_material_override/0 = SubResource("StandardMaterial3D_lamp")
+
+[node name="Lamp3" type="MeshInstance3D" parent="Lamps" unique_id=1301198576]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, 0.05, 0)
+mesh = SubResource("BoxMesh_lamp")
+surface_material_override/0 = SubResource("StandardMaterial3D_lamp")
+
+[node name="Glow" type="OmniLight3D" parent="." unique_id=1243451589]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+light_color = Color(0.2, 0.8, 1, 1)
+light_energy = 0.6
+omni_range = 3.0
+
+[node name="DashGauge" type="Node" parent="." unique_id=1716344039 node_paths=PackedStringArray("lamps_root")]
+script = ExtResource("2_aymms")
+lamps_root = NodePath("../Lamps")

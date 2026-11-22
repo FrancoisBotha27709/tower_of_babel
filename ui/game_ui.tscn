@@ -1,0 +1,176 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/menu_controller.gd" id="1_menu"]
+[ext_resource type="Script" path="res://ui/entry_list.gd" id="2_list"]
+[ext_resource type="Script" path="res://ui/inventory_panel.gd" id="3_inventory"]
+[ext_resource type="Script" path="res://ui/shop_panel.gd" id="4_shop"]
+[ext_resource type="Script" path="res://ui/loot_panel.gd" id="5_loot"]
+[ext_resource type="Script" path="res://ui/ui_panel.gd" id="6_panel"]
+
+[node name="GameUI" type="CanvasLayer" node_paths=PackedStringArray("panels", "inventory_panel")]
+process_mode = 3
+layer = 10
+script = ExtResource("1_menu")
+panels = [NodePath("InventoryPanel"), NodePath("ShopPanel"), NodePath("LootPanel")]
+inventory_panel = NodePath("InventoryPanel")
+
+[node name="InventoryPanel" type="PanelContainer" parent="." node_paths=PackedStringArray("close_button", "entry_list", "gold_label", "description_label")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -260.0
+offset_right = 320.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_inventory")
+close_button = NodePath("Box/Close")
+entry_list = NodePath("Box/EntryList")
+gold_label = NodePath("Box/Gold")
+description_label = NodePath("Box/Description")
+
+[node name="Box" type="VBoxContainer" parent="InventoryPanel"]
+
+[node name="Title" type="Label" parent="InventoryPanel/Box"]
+text = "Inventory"
+
+
+[node name="EntryList" type="ItemList" parent="InventoryPanel/Box"]
+custom_minimum_size = Vector2(0, 260)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_list")
+
+[node name="Description" type="Label" parent="InventoryPanel/Box"]
+text = ""
+autowrap_mode = 3
+custom_minimum_size = Vector2(0, 70)
+
+[node name="Gold" type="Label" parent="InventoryPanel/Box"]
+text = "Gold: 0"
+
+
+[node name="Close" type="Button" parent="InventoryPanel/Box"]
+text = "Close"
+
+[node name="ShopPanel" type="PanelContainer" parent="." node_paths=PackedStringArray("close_button", "buy_list", "sell_list", "buy_button", "sell_button", "gold_label", "message_label")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -280.0
+offset_right = 450.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_shop")
+close_button = NodePath("Box/Close")
+buy_list = NodePath("Box/Columns/BuyColumn/BuyList")
+sell_list = NodePath("Box/Columns/SellColumn/SellList")
+buy_button = NodePath("Box/Columns/BuyColumn/Buy")
+sell_button = NodePath("Box/Columns/SellColumn/Sell")
+gold_label = NodePath("Box/Gold")
+message_label = NodePath("Box/Message")
+
+[node name="Box" type="VBoxContainer" parent="ShopPanel"]
+
+[node name="Title" type="Label" parent="ShopPanel/Box"]
+text = "Shop"
+
+
+[node name="Columns" type="HBoxContainer" parent="ShopPanel/Box"]
+size_flags_vertical = 3
+
+[node name="BuyColumn" type="VBoxContainer" parent="ShopPanel/Box/Columns"]
+size_flags_horizontal = 3
+
+[node name="Heading" type="Label" parent="ShopPanel/Box/Columns/BuyColumn"]
+text = "Buy"
+
+
+[node name="BuyList" type="ItemList" parent="ShopPanel/Box/Columns/BuyColumn"]
+custom_minimum_size = Vector2(0, 260)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_list")
+
+[node name="Buy" type="Button" parent="ShopPanel/Box/Columns/BuyColumn"]
+text = "Buy selected"
+
+[node name="SellColumn" type="VBoxContainer" parent="ShopPanel/Box/Columns"]
+size_flags_horizontal = 3
+
+[node name="Heading" type="Label" parent="ShopPanel/Box/Columns/SellColumn"]
+text = "Sell"
+
+
+[node name="SellList" type="ItemList" parent="ShopPanel/Box/Columns/SellColumn"]
+custom_minimum_size = Vector2(0, 260)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_list")
+
+[node name="Sell" type="Button" parent="ShopPanel/Box/Columns/SellColumn"]
+text = "Sell selected"
+
+[node name="Message" type="Label" parent="ShopPanel/Box"]
+text = ""
+
+
+[node name="Gold" type="Label" parent="ShopPanel/Box"]
+text = "Gold: 0"
+
+
+[node name="Close" type="Button" parent="ShopPanel/Box"]
+text = "Close"
+
+[node name="LootPanel" type="PanelContainer" parent="." node_paths=PackedStringArray("close_button", "loot_list", "take_button", "take_all_button", "message_label")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -230.0
+offset_right = 320.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_loot")
+close_button = NodePath("Box/Close")
+loot_list = NodePath("Box/LootList")
+take_button = NodePath("Box/Buttons/Take")
+take_all_button = NodePath("Box/Buttons/TakeAll")
+message_label = NodePath("Box/Message")
+
+[node name="Box" type="VBoxContainer" parent="LootPanel"]
+
+[node name="Title" type="Label" parent="LootPanel/Box"]
+text = "Loot"
+
+
+[node name="LootList" type="ItemList" parent="LootPanel/Box"]
+custom_minimum_size = Vector2(0, 240)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_list")
+
+[node name="Message" type="Label" parent="LootPanel/Box"]
+text = ""
+
+
+[node name="Buttons" type="HBoxContainer" parent="LootPanel/Box"]
+
+[node name="Take" type="Button" parent="LootPanel/Box/Buttons"]
+text = "Take selected"
+
+[node name="TakeAll" type="Button" parent="LootPanel/Box/Buttons"]
+text = "Take all"
+
+[node name="Close" type="Button" parent="LootPanel/Box"]
+text = "Close"

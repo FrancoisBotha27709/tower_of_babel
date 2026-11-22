@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="UpgradeData" format=3]
+
+[ext_resource type="Script" path="res://items/upgrade_data.gd" id="1_item"]
+[ext_resource type="Script" path="res://abilities/ability_data.gd" id="2_ability_script"]
+[ext_resource type="Resource" path="res://data/abilities/second_wind.tres" id="3_ability"]
+
+[resource]
+script = ExtResource("1_item")
+display_name = "Second Wind"
+description = "Upgrade: automatically heals 20 when hurt, every 15 seconds."
+value = 180
+max_stacks = 1
+abilities = Array[ExtResource("2_ability_script")]([ExtResource("3_ability")])

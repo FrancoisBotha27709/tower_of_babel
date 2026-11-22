@@ -1,0 +1,388 @@
+[gd_scene format=3 uid="uid://g4qx1abjlym7"]
+
+[ext_resource type="Script" uid="uid://cdkcikw7qp4th" path="res://player/player.gd" id="1_oul6g"]
+[ext_resource type="Script" uid="uid://hl1ha7wfxbcg" path="res://player/camera_rig.gd" id="2_boad6"]
+[ext_resource type="Script" uid="uid://ddm0wuwsase6g" path="res://player/camera_3d.gd" id="2_rkbax"]
+[ext_resource type="Script" uid="uid://b3sw6tadunxa" path="res://player/state_machine/state_machine.gd" id="4_8t03j"]
+[ext_resource type="PackedScene" uid="uid://dh3hx0xtxjjs6" path="res://player/ui/viewmodel.tscn" id="4_ebec5"]
+[ext_resource type="Script" uid="uid://gaj0a8m7u2wc" path="res://player/state_machine/ground_state.gd" id="4_rgyib"]
+[ext_resource type="Script" uid="uid://d6uc1s2kucbn" path="res://player/state_machine/slide_state.gd" id="5_hg6s5"]
+[ext_resource type="Script" uid="uid://lsnjypry54i2" path="res://player/state_machine/jump_state.gd" id="6_8t03j"]
+[ext_resource type="Script" uid="uid://lwnu70utflpt" path="res://player/state_machine/air_state.gd" id="7_2ieo8"]
+[ext_resource type="Script" uid="uid://byokomawhwg3l" path="res://player/state_machine/wall_run_state.gd" id="8_hg6s5"]
+[ext_resource type="Script" uid="uid://chus4vrswpfvq" path="res://player/state_machine/dash_state.gd" id="9_8t03j"]
+[ext_resource type="Script" uid="uid://ceeyk4egnb4y5" path="res://player/ui/speed_wind.gd" id="12_wind"]
+[ext_resource type="Script" uid="uid://c3rmuibxa5lh" path="res://combat/health_component.gd" id="20_health"]
+[ext_resource type="Script" uid="uid://1ow10kaq0was" path="res://combat/hurtbox_component.gd" id="21_hurtbox"]
+[ext_resource type="Script" uid="uid://ddck8mfjmm11q" path="res://combat/knockback_component.gd" id="22_knockback"]
+[ext_resource type="Script" uid="uid://cw45g0m0fsel4" path="res://combat/hitbox_component.gd" id="23_hitbox"]
+[ext_resource type="Script" uid="uid://c13ypwja68fyq" path="res://combat/hitbox_trigger.gd" id="24_trigger"]
+
+[ext_resource type="Script" path="res://stats/stats_component.gd" id="30_stats"]
+[ext_resource type="Script" path="res://items/inventory_component.gd" id="31_inventory"]
+[ext_resource type="Script" path="res://abilities/ability_component.gd" id="32_abilities"]
+[ext_resource type="Script" path="res://combat/death_component.gd" id="33_death"]
+[ext_resource type="Script" path="res://stats/stat_binder.gd" id="37_binder"]
+[ext_resource type="Resource" path="res://data/stats/max_health.tres" id="38_stat_health"]
+[ext_resource type="Resource" path="res://data/stats/move_speed.tres" id="39_stat_speed"]
+[ext_resource type="Resource" path="res://data/stats/damage.tres" id="40_stat_damage"]
+[ext_resource type="Script" path="res://player/player_respawn.gd" id="34_respawn"]
+[ext_resource type="PackedScene" path="res://ui/game_ui.tscn" id="60_gameui"]
+[ext_resource type="Script" path="res://loot/wallet_component.gd" id="61_wallet"]
+[ext_resource type="Script" path="res://player/state_machine/double_jump_state.gd" id="62_double_jump"]
+[ext_resource type="Script" path="res://items/slot_definition.gd" id="41_slot_script"]
+[ext_resource type="Resource" path="res://data/slots/weapon.tres" id="42_slot_weapon"]
+[ext_resource type="Resource" path="res://data/slots/trinket.tres" id="43_slot_trinket"]
+[ext_resource type="Script" path="res://player/death_roll.gd" id="35_roll"]
+[ext_resource type="Script" path="res://player/state_machine/dead_state.gd" id="36_dead"]
+
+[ext_resource type="Script" path="res://player/state_machine/mantle_state.gd" id="50_mantle"]
+[ext_resource type="Script" path="res://player/state_machine/slam_state.gd" id="51_slam"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_slam"]
+radius = 4.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_oul6g"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rkbax"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wind"]
+emission_shape_offset = Vector3(0, 0, -6)
+emission_shape = 3
+emission_box_extents = Vector3(4, 3, 1)
+direction = Vector3(0, 0, 1)
+spread = 0.0
+initial_velocity_min = 30.0
+initial_velocity_max = 40.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wind"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.35)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wind"]
+material = SubResource("StandardMaterial3D_wind")
+size = Vector3(0.015, 0.015, 2.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_punch"]
+size = Vector3(1.5, 1.5, 1.6)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurt"]
+
+[node name="Player" type="CharacterBody3D" unique_id=21423180 node_paths=PackedStringArray("collision_shape", "head", "ceiling_check") groups=["player"]]
+floor_snap_length = 0.4
+script = ExtResource("1_oul6g")
+collision_shape = NodePath("CollisionShape3D")
+head = NodePath("CameraRig")
+ceiling_check = NodePath("CeilingCheck")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1313477931]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_oul6g")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=359489244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_rkbax")
+
+[node name="CeilingCheck" type="RayCast3D" parent="." unique_id=1717913622]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+target_position = Vector3(0, 1.3, 0)
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=1269041414 node_paths=PackedStringArray("body", "machine", "camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+script = ExtResource("2_boad6")
+body = NodePath("..")
+machine = NodePath("../StateMachine")
+camera = NodePath("Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=395192404]
+script = ExtResource("2_rkbax")
+
+[node name="Viewmodel" parent="CameraRig/Camera3D" unique_id=848013827 node_paths=PackedStringArray("body", "machine") instance=ExtResource("4_ebec5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, -0.3, -0.6)
+body = NodePath("../../..")
+machine = NodePath("../../../StateMachine")
+
+[node name="DashGauge" parent="CameraRig/Camera3D/Viewmodel" index="3" unique_id=1716344039 node_paths=PackedStringArray("source")]
+source = NodePath("../../../../StateMachine/Dash")
+
+[node name="SpeedWind" type="GPUParticles3D" parent="CameraRig/Camera3D" unique_id=959836208 node_paths=PackedStringArray("body")]
+emitting = false
+amount = 80
+lifetime = 0.4
+visibility_aabb = AABB(-8, -8, -12, 16, 16, 24)
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_wind")
+draw_pass_1 = SubResource("BoxMesh_wind")
+script = ExtResource("12_wind")
+body = NodePath("../../..")
+
+[node name="Punch" type="Area3D" parent="CameraRig" unique_id=1664581049 node_paths=PackedStringArray("source")]
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("23_hitbox")
+damage = 25.0
+knockback_force = 12.0
+source = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CameraRig/Punch" unique_id=1726212590]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.3)
+shape = SubResource("BoxShape3D_punch")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1510160178 node_paths=PackedStringArray("body", "initial_state")]
+script = ExtResource("4_8t03j")
+body = NodePath("..")
+initial_state = NodePath("Run")
+metadata/_custom_type_script = "uid://b3sw6tadunxa"
+
+[node name="Run" type="Node" parent="StateMachine" unique_id=554696805]
+script = ExtResource("4_rgyib")
+pressed_transitions = Dictionary[StringName, StringName]({
+&"crouch": &"Slide",
+&"dash": &"Dash",
+&"jump": &"Jump",
+&"walk": &"Walk"
+})
+floor_lost_state = &"Air"
+
+[node name="Walk" type="Node" parent="StateMachine" unique_id=47816691]
+script = ExtResource("4_rgyib")
+speed = 6.0
+overspeed_friction = 60.0
+pressed_transitions = Dictionary[StringName, StringName]({
+&"crouch": &"Crouch",
+&"dash": &"Dash",
+&"jump": &"Jump"
+})
+hold_action = &"walk"
+exit_state = &"Run"
+floor_lost_state = &"Air"
+
+[node name="Crouch" type="Node" parent="StateMachine" unique_id=890428674]
+script = ExtResource("4_rgyib")
+speed = 5.0
+overspeed_friction = 60.0
+pressed_transitions = Dictionary[StringName, StringName]({
+&"dash": &"Dash",
+&"jump": &"Jump"
+})
+hold_action = &"crouch"
+exit_state = &"Run"
+floor_lost_state = &"Air"
+stance_scale = 0.5
+
+[node name="Slide" type="Node" parent="StateMachine" unique_id=1505644373]
+script = ExtResource("5_hg6s5")
+pressed_transitions = Dictionary[StringName, StringName]({
+&"dash": &"Dash",
+&"jump": &"SlideJump"
+})
+hold_action = &"crouch"
+exit_state = &"Run"
+floor_lost_state = &"Air"
+stance_scale = 0.5
+
+[node name="Jump" type="Node" parent="StateMachine" unique_id=1297627475]
+script = ExtResource("6_8t03j")
+momentum_gain = 1.2
+momentum_cap = 22.0
+
+[node name="WallJump" type="Node" parent="StateMachine" unique_id=107840434]
+script = ExtResource("6_8t03j")
+requires_floor = false
+wall_push_speed = 9.0
+momentum_gain = 2.0
+momentum_cap = 26.0
+
+[node name="Air" type="Node" parent="StateMachine" unique_id=658663859 node_paths=PackedStringArray("mantle")]
+script = ExtResource("7_2ieo8")
+mantle = NodePath("../Mantle")
+pressed_transitions = Dictionary[StringName, StringName]({
+&"crouch": &"Slam",
+&"dash": &"Dash",
+&"jump": &"DoubleJump"
+})
+landing_state = &"Run"
+landing_held_transitions = Dictionary[StringName, StringName]({
+&"crouch": &"Slide"
+})
+
+[node name="WallRun" type="Node" parent="StateMachine" unique_id=1486753722]
+script = ExtResource("8_hg6s5")
+pressed_transitions = Dictionary[StringName, StringName]({
+&"crouch": &"Air",
+&"dash": &"Dash",
+&"jump": &"WallJump"
+})
+reenter_delay = 0.2
+exit_state = &"Air"
+landing_state = &"Run"
+metadata/_custom_type_script = "uid://byokomawhwg3l"
+
+[node name="Dash" type="Node" parent="StateMachine" unique_id=708388199]
+script = ExtResource("9_8t03j")
+exit_state = &"Air"
+metadata/_custom_type_script = "uid://chus4vrswpfvq"
+
+[node name="Health" type="Node" parent="." unique_id=996272464 node_paths=PackedStringArray("body")]
+body = NodePath("..")
+script = ExtResource("20_health")
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=467301634 node_paths=PackedStringArray("health")]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("21_hurtbox")
+health = NodePath("../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=126485163]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_hurt")
+
+[node name="Knockback" type="Node" parent="." unique_id=374664400 node_paths=PackedStringArray("body", "health")]
+script = ExtResource("22_knockback")
+body = NodePath("..")
+health = NodePath("../Health")
+
+[node name="PunchTrigger" type="Node" parent="." unique_id=462509250 node_paths=PackedStringArray("hitbox")]
+script = ExtResource("24_trigger")
+hitbox = NodePath("../CameraRig/Punch")
+
+[node name="Dead" type="Node" parent="StateMachine"]
+script = ExtResource("36_dead")
+stance_scale = 0.1
+
+[node name="Stats" type="Node" parent="."]
+script = ExtResource("30_stats")
+
+[node name="Abilities" type="Node" parent="." node_paths=PackedStringArray("body", "stats", "health")]
+script = ExtResource("32_abilities")
+body = NodePath("..")
+stats = NodePath("../Stats")
+health = NodePath("../Health")
+accepts_input = true
+
+[node name="Inventory" type="Node" parent="." node_paths=PackedStringArray("body", "stats", "abilities")]
+script = ExtResource("31_inventory")
+body = NodePath("..")
+stats = NodePath("../Stats")
+abilities = NodePath("../Abilities")
+allowed_slots = Array[ExtResource("41_slot_script")]([ExtResource("42_slot_weapon"), ExtResource("43_slot_trinket")])
+
+[node name="Death" type="Node" parent="." node_paths=PackedStringArray("health")]
+script = ExtResource("33_death")
+health = NodePath("../Health")
+death_delay = 1.5
+
+[node name="DeathRoll" type="Node" parent="." node_paths=PackedStringArray("death", "rig")]
+script = ExtResource("35_roll")
+death = NodePath("../Death")
+rig = NodePath("../CameraRig")
+
+[node name="Respawn" type="Node" parent="." node_paths=PackedStringArray("body", "machine", "health", "death", "rig")]
+script = ExtResource("34_respawn")
+body = NodePath("..")
+machine = NodePath("../StateMachine")
+health = NodePath("../Health")
+death = NodePath("../Death")
+rig = NodePath("../CameraRig")
+
+[node name="MaxHealthBinder" type="Node" parent="." node_paths=PackedStringArray("stats", "target")]
+script = ExtResource("37_binder")
+stats = NodePath("../Stats")
+target = NodePath("../Health")
+stat = ExtResource("38_stat_health")
+property = &"maximum_health"
+
+[node name="RunSpeedBinder" type="Node" parent="." node_paths=PackedStringArray("stats", "target")]
+script = ExtResource("37_binder")
+stats = NodePath("../Stats")
+target = NodePath("../StateMachine/Run")
+stat = ExtResource("39_stat_speed")
+property = &"speed"
+
+[node name="WalkSpeedBinder" type="Node" parent="." node_paths=PackedStringArray("stats", "target")]
+script = ExtResource("37_binder")
+stats = NodePath("../Stats")
+target = NodePath("../StateMachine/Walk")
+stat = ExtResource("39_stat_speed")
+property = &"speed"
+
+[node name="CrouchSpeedBinder" type="Node" parent="." node_paths=PackedStringArray("stats", "target")]
+script = ExtResource("37_binder")
+stats = NodePath("../Stats")
+target = NodePath("../StateMachine/Crouch")
+stat = ExtResource("39_stat_speed")
+property = &"speed"
+
+[node name="PunchDamageBinder" type="Node" parent="." node_paths=PackedStringArray("stats", "target")]
+script = ExtResource("37_binder")
+stats = NodePath("../Stats")
+target = NodePath("../CameraRig/Punch")
+stat = ExtResource("40_stat_damage")
+property = &"damage"
+
+[node name="SlideJump" type="Node" parent="StateMachine"]
+script = ExtResource("6_8t03j")
+jump_speed = 12.0
+momentum_gain = 4.0
+momentum_cap = 30.0
+
+[node name="SlamJump" type="Node" parent="StateMachine"]
+script = ExtResource("6_8t03j")
+jump_speed = 20.0
+
+[node name="Mantle" type="Node" parent="StateMachine"]
+script = ExtResource("50_mantle")
+pressed_transitions = Dictionary[StringName, StringName]({
+&"dash": &"Dash"
+})
+exit_state = &"Air"
+landing_state = &"Run"
+
+[node name="Slam" type="Node" parent="StateMachine" node_paths=PackedStringArray("impact_hitbox")]
+script = ExtResource("51_slam")
+impact_hitbox = NodePath("../../SlamImpact")
+pressed_transitions = Dictionary[StringName, StringName]({
+&"dash": &"Dash"
+})
+exit_state = &"Air"
+landing_state = &"Run"
+landing_held_transitions = Dictionary[StringName, StringName]({
+&"crouch": &"Slide"
+})
+jump_state = &"SlamJump"
+
+[node name="SlamImpact" type="Area3D" parent="." node_paths=PackedStringArray("source")]
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("23_hitbox")
+damage = 40.0
+knockback_force = 18.0
+pulse_duration = 0.12
+source = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SlamImpact"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("SphereShape3D_slam")
+
+[node name="DoubleJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("machine")]
+script = ExtResource("62_double_jump")
+machine = NodePath("..")
+momentum_gain = 1.2
+momentum_cap = 22.0
+
+[node name="Wallet" type="Node" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("61_wallet")
+body = NodePath("..")
+
+[node name="GameUI" parent="." node_paths=PackedStringArray("player") instance=ExtResource("60_gameui")]
+player = NodePath("..")
+
+[connection signal="dying" from="Death" to="StateMachine" method="transition" binds= [&"Dead"]]
+[connection signal="dying" from="Death" to="PunchTrigger" method="set_process_unhandled_input" binds= [false]]
+[connection signal="dash_started" from="StateMachine/Dash" to="Health" method="set_immune" binds= [true]]
+[connection signal="dash_ended" from="StateMachine/Dash" to="Health" method="set_immune" binds= [false]]
+[connection signal="respawned" from="Respawn" to="PunchTrigger" method="set_process_unhandled_input" binds= [true]]
+
+[editable path="CameraRig/Camera3D/Viewmodel"]
